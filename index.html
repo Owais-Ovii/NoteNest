@@ -6,65 +6,8 @@
 <title>NoteNest</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
 <style>
-/* 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --bg:         #07070e;
-  --canvas:     #09090f;
-  --win-bg:     #0e0e18;
-  --win-bg2:    #111120;
-  --win-border: #1e1e32;
-  --win-border-focus: #2e2e50;
-  --titlebar:   #0b0b16;
-  --sidebar:    #0c0c19;
-  --accent:     #c9a84c;
-  --accent2:    #7c6af5;
-  --accent3:    #4caf82;
-  --danger:     #c95a5a;
-  --text1:      #e8e4d8;
-  --text2:      #9b9888;
-  --text3:      #5a5870;
-  --divider:    #191928;
-  --pill-bg:    rgba(14,14,28,0.92);
-  --pill-border:rgba(80,70,140,0.35);
-  --note-hover: #131325;
-  --input-bg:   #0c0c1c;
-  --tag-bg:     rgba(124,106,245,0.12);
-  --tag-border: rgba(124,106,245,0.3);
-  --shadow-win: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px var(--win-border);
-  --shadow-focus: 0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px var(--win-border-focus), 0 0 40px rgba(124,106,245,0.06);
-  --radius:     12px;
-  --radius-sm:  8px;
-}
 
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: var(--bg);
-  font-family: 'Syne', sans-serif;
-  color: var(--text1);
-  user-select: none;
-  cursor: default;
-}
-*/
-/* ── DESKTOP ── */
-#desktop {
-  width: 100vw; height: 100vh;
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,106,245,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 85%, rgba(201,168,76,0.03) 0%, transparent 55%),
-    var(--canvas);
-}
-#desktop::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.6;
-}
 
 /* ── WINDOW ── */
 .window {
