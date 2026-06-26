@@ -1,0 +1,28 @@
+:root {
+  --bg:         #07070e;
+  --canvas:     #09090f;
+  --win-bg:     #0e0e18;
+  --win-bg2:    #111120;
+  --win-border: #1e1e32;
+  --win-border-focus: #2e2e50;
+  --titlebar:   #0b0b16;
+  --sidebar:    #0c0c19;
+  --accent:     #c9a84c;
+  --accent2:    #7c6af5;
+  --accent3:    #4caf82;
+  --danger:     #c95a5a;
+  --text1:      #e8e4d8;
+  --text2:      #9b9888;
+  --text3:      #5a5870;
+  --divider:    #191928;
+  --pill-bg:    rgba(14,14,28,0.92);
+  --pill-border:rgba(80,70,140,0.35);
+  --note-hover: #131325;
+  --input-bg:   #0c0c1c;
+  --tag-bg:     rgba(124,106,245,0.12);
+  --tag-border: rgba(124,106,245,0.3);
+  --shadow-win: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px var(--win-border);
+  --shadow-focus: 0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px var(--win-border-focus), 0 0 40px rgba(124,106,245,0.06);
+  --radius:     12px;
+  --radius-sm:  8px;
+}

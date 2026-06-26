@@ -1,0 +1,49 @@
+/* ── Layout utilities ── */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.flex-1 { flex: 1; }
+.shrink-0 { flex-shrink: 0; }
+
+/* ── Spacing (padding & margin) ── */
+.p-1 { padding: 4px; }
+.p-2 { padding: 8px; }
+.p-3 { padding: 12px; }
+.p-4 { padding: 16px; }
+.px-2 { padding-left: 8px; padding-right: 8px; }
+.px-3 { padding-left: 12px; padding-right: 12px; }
+.py-1 { padding-top: 4px; padding-bottom: 4px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+
+/* ── Text utilities ── */
+.text-xs { font-size: 10px; }
+.text-sm { font-size: 11px; }
+.text-base { font-size: 13px; }
+.text-lg { font-size: 16px; }
+.text-xl { font-size: 20px; }
+
+.text-muted { color: var(--text3); }
+.text-secondary { color: var(--text2); }
+.text-accent { color: var(--accent2); }
+.text-danger { color: var(--danger); }
+
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.uppercase { text-transform: uppercase; }
+.letter-wide { letter-spacing: 0.06em; }
+
+/* ── Borders & backgrounds ── */
+.border-divider { border: 1px solid var(--divider); }
+.rounded { border-radius: var(--radius-sm); }
+.rounded-full { border-radius: 9999px; }
+.bg-input { background: var(--input-bg); }
+.bg-win { background: var(--win-bg); }
