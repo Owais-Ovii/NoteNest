@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo – NoteNest</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/utilities.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/todo.css" />
+
+    <style>
+        .app-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 12px;
+            background: var(--titlebar);
+            border-bottom: 1px solid var(--divider);
+            flex-shrink: 0;
+        }
+        .view-toggle {
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--win-border);
+            background: var(--win-bg2);
+            color: var(--text2);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Syne', sans-serif;
+        }
+        .view-toggle:hover {
+            border-color: var(--accent2);
+            color: var(--text1);
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: var(--win-bg);
+        }
+        .app-container .todo-layout {
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* Simple view: hide header and filters */
+        .app-container.simple-view .todo-header { display: none; }
+        .app-container.simple-view .todo-layout {
+            grid-template-rows: 1fr auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container expanded-view">
+    <div class="app-header">
+        <button class="view-toggle" id="viewToggle">Switch to Simple View</button>
+    </div>
+
+    <div class="todo-layout">
+        <div class="todo-header">
+            <h3>Saturday, April 18</h3>
+            <p class="todo-subtitle">3 tasks remaining · 2 completed</p>
+            <div class="todo-filters">
+                <button class="filter-pill active">All</button>
+                <button class="filter-pill">Today</button>
+                <button class="filter-pill">Upcoming</button>
+                <button class="filter-pill">Done</button>
+            </div>
+        </div>
+        <div class="todo-list">
+            <div class="todo-section-label">Overdue</div>
+            <div class="todo-item">
+                <div class="priority-dot p-high"></div>
+                <div class="todo-check"></div>
+                <div class="todo-content">
+                    <div class="todo-text">Submit Organic Chemistry lab report</div>
+                    <div class="todo-due due-overdue"><i class="fas fa-exclamation-triangle"></i> Due Apr 16 · Chemistry</div>
+                </div>
+            </div>
+            <div class="todo-section-label">Today</div>
+            <div class="todo-item">
+                <div class="priority-dot p-med"></div>
+                <div class="todo-check"></div>
+                <div class="todo-content">
+                    <div class="todo-text">Review SN1/SN2 mechanisms</div>
+                    <div class="todo-due due-soon"><i class="far fa-clock"></i> 5:00 PM · Chemistry</div>
+                </div>
+            </div>
+            <div class="todo-item">
+                <div class="priority-dot p-low"></div>
+                <div class="todo-check"></div>
+                <div class="todo-content">
+                    <div class="todo-text">Read Chapter 7 — Thermodynamics</div>
+                    <div class="todo-due due-normal"><i class="far fa-calendar-alt"></i> Today · Physics</div>
+                </div>
+            </div>
+            <div class="todo-section-label">Completed</div>
+            <div class="todo-item done">
+                <div class="priority-dot p-low" style="opacity:0.3"></div>
+                <div class="todo-check"><i class="fas fa-check"></i></div>
+                <div class="todo-content">
+                    <div class="todo-text">Complete Math Problem Set 4</div>
+                    <div class="todo-due due-normal" style="opacity:0.5">Done · 11:30 AM</div>
+                </div>
+            </div>
+        </div>
+        <div class="todo-add">
+            <div class="todo-input-row">
+                <input class="todo-input" type="text" placeholder="Add a task..." />
+                <button class="todo-submit"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const container = document.querySelector('.app-container');
+    const toggleBtn = document.getElementById('viewToggle');
+
+    function setView(mode) {
+        if (mode === 'simple') {
+            container.classList.remove('expanded-view');
+            container.classList.add('simple-view');
+            toggleBtn.textContent = 'Switch to Expanded View';
+        } else {
+            container.classList.remove('simple-view');
+            container.classList.add('expanded-view');
+            toggleBtn.textContent = 'Switch to Simple View';
+        }
+    }
+
+    if (window.top !== window.self) setView('simple');
+    else setView('expanded');
+
+    toggleBtn.addEventListener('click', () => {
+        if (container.classList.contains('simple-view')) setView('expanded');
+        else setView('simple');
+    });
+
+    // Todo logic
+    document.querySelectorAll('.todo-check').forEach(check => {
+        check.addEventListener('click', e => {
+            e.stopPropagation();
+            const item = check.closest('.todo-item');
+            item.classList.toggle('done');
+            check.innerHTML = item.classList.contains('done') ? '<i class="fas fa-check"></i>' : '';
+        });
+    });
+    document.querySelector('.todo-submit')?.addEventListener('click', () => {
+        const inp = document.querySelector('.todo-input');
+        if (!inp.value.trim()) return;
+        const list = document.querySelector('.todo-list');
+        const div = document.createElement('div');
+        div.className = 'todo-item';
+        div.innerHTML = `
+            <div class="priority-dot p-low"></div>
+            <div class="todo-check"></div>
+            <div class="todo-content">
+                <div class="todo-text">${inp.value.trim()}</div>
+                <div class="todo-due due-normal"><i class="far fa-calendar-alt"></i> Today</div>
+            </div>`;
+        div.querySelector('.todo-check').addEventListener('click', e => {
+            e.stopPropagation();
+            div.classList.toggle('done');
+            div.querySelector('.todo-check').innerHTML = div.classList.contains('done') ? '<i class="fas fa-check"></i>' : '';
+        });
+        list.appendChild(div);
+        inp.value = '';
+    });
+    document.querySelector('.todo-input')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') document.querySelector('.todo-submit').click();
+    });
+    document.querySelectorAll('.filter-pill').forEach(p => {
+        p.addEventListener('click', () => {
+            document.querySelectorAll('.filter-pill').forEach(x => x.classList.remove('active'));
+            p.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+#desktop {
+  width: 100vw; height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,106,245,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 85%, rgba(201,168,76,0.03) 0%, transparent 55%),
+    var(--canvas);
+}
+#desktop::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.6;
+}

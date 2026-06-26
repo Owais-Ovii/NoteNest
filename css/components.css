@@ -1,0 +1,125 @@
+/* ── Generic button ── */
+.btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  color: var(--text2);
+}
+.btn:hover { color: var(--text1); }
+
+/* ── Inputs ── */
+.input {
+  background: var(--input-bg);
+  border: 1px solid var(--divider);
+  border-radius: 6px;
+  padding: 7px 10px;
+  color: var(--text1);
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+.input:focus { border-color: rgba(124,106,245,0.4); }
+.input::placeholder { color: var(--text3); }
+
+/* ── Cards / items ── */
+.card {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 10px 12px;
+  transition: all 0.12s;
+  cursor: pointer;
+}
+.card:hover { background: var(--note-hover); }
+.card.active {
+  background: rgba(124,106,245,0.08);
+  border-color: rgba(124,106,245,0.2);
+}
+
+/* ── Dividers ── */
+.divider {
+  height: 1px;
+  background: var(--divider);
+}
+.divider-vertical {
+  width: 1px;
+  height: 16px;
+  background: var(--divider);
+  margin: 0 4px;
+}
+
+/* ── Tags / pills ── */
+.tag {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: var(--accent2);
+  letter-spacing: 0.04em;
+}
+.pill {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: 1px solid var(--divider);
+  color: var(--text3);
+  background: none;
+  transition: all 0.12s;
+}
+.pill:hover { color: var(--text2); }
+.pill.active {
+  background: rgba(124,106,245,0.12);
+  border-color: rgba(124,106,245,0.3);
+  color: var(--accent2);
+}
+
+/* ── Context menu ── */
+.ctx-menu {
+  position: fixed;
+  background: var(--win-bg2);
+  border: 1px solid var(--win-border);
+  border-radius: 10px;
+  padding: 6px;
+  z-index: 99999;
+  min-width: 160px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+  animation: winOpen 0.15s ease;
+}
+.ctx-item {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text2);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ctx-item:hover { background: rgba(255,255,255,0.05); color: var(--text1); }
+.ctx-item.danger:hover { background: rgba(201,90,90,0.1); color: var(--danger); }
+.ctx-divider { height: 1px; background: var(--divider); margin: 4px 0; }
+
+/* ── Tooltip ── */
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%; transform: translateX(-50%);
+  background: var(--win-bg2);
+  border: 1px solid var(--win-border);
+  color: var(--text2);
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}

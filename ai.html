@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Assistant – NoteNest</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/utilities.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/ai.css" />
+
+    <style>
+        .app-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 12px;
+            background: var(--titlebar);
+            border-bottom: 1px solid var(--divider);
+            flex-shrink: 0;
+        }
+        .view-toggle {
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--win-border);
+            background: var(--win-bg2);
+            color: var(--text2);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Syne', sans-serif;
+        }
+        .view-toggle:hover {
+            border-color: var(--accent2);
+            color: var(--text1);
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: var(--win-bg);
+        }
+        .app-container .ai-layout {
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* Simple view: hide header & suggestions */
+        .app-container.simple-view .ai-header { display: none; }
+        .app-container.simple-view .ai-suggestions { display: none; }
+        .app-container.simple-view .ai-messages {
+            padding-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container expanded-view">
+    <div class="app-header">
+        <button class="view-toggle" id="viewToggle">Switch to Simple View</button>
+    </div>
+
+    <div class="ai-layout">
+        <div class="ai-header">
+            <div class="ai-indicator"></div>
+            <div class="ai-header-text">
+                <h4>NoteNest AI</h4>
+                <p>Connected to your note library</p>
+            </div>
+            <div class="ai-context-badge"><i class="fas fa-pen-fancy"></i> Reaction Mechanisms</div>
+        </div>
+        <div class="ai-messages" id="aiMessages">
+            <div class="ai-msg assistant">
+                <div class="msg-bubble">Hello! I can see you're working on <em>Reaction Mechanisms</em>. I have context of all your Chemistry notes. What would you like help with?</div>
+                <div class="msg-time">2:14 PM</div>
+            </div>
+            <div class="ai-msg user">
+                <div class="msg-bubble">Explain the difference between SN1 and SN2 more simply</div>
+                <div class="msg-time">2:15 PM</div>
+            </div>
+            <div class="ai-msg assistant">
+                <div class="msg-bubble">Think of it like this: <strong>SN2</strong> is a one-step mugging…</div>
+                <div class="msg-time">2:15 PM</div>
+            </div>
+        </div>
+        <div class="ai-suggestions">
+            <button class="suggestion-chip" onclick="aiChip(this)">Generate practice questions</button>
+            <button class="suggestion-chip" onclick="aiChip(this)">Summarise this note</button>
+            <button class="suggestion-chip" onclick="aiChip(this)">Find gaps in my notes</button>
+            <button class="suggestion-chip" onclick="aiChip(this)">Define carbocation</button>
+        </div>
+        <div class="ai-input-area">
+            <div class="ai-input-row">
+                <textarea class="ai-input" rows="1" id="aiInput" placeholder="Ask anything about your notes..."></textarea>
+                <button class="ai-send" onclick="sendAiMessage()"><i class="fas fa-arrow-up"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const container = document.querySelector('.app-container');
+    const toggleBtn = document.getElementById('viewToggle');
+
+    function setView(mode) {
+        if (mode === 'simple') {
+            container.classList.remove('expanded-view');
+            container.classList.add('simple-view');
+            toggleBtn.textContent = 'Switch to Expanded View';
+        } else {
+            container.classList.remove('simple-view');
+            container.classList.add('expanded-view');
+            toggleBtn.textContent = 'Switch to Simple View';
+        }
+    }
+
+    if (window.top !== window.self) setView('simple');
+    else setView('expanded');
+
+    toggleBtn.addEventListener('click', () => {
+        if (container.classList.contains('simple-view')) setView('expanded');
+        else setView('simple');
+    });
+
+    // AI chat logic
+    function aiChip(btn) {
+        document.getElementById('aiInput').value = btn.textContent;
+        sendAiMessage();
+    }
+    function sendAiMessage() {
+        const input = document.getElementById('aiInput');
+        const text = input.value.trim();
+        if (!text) return;
+        const msgs = document.getElementById('aiMessages');
+        const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+        const userMsg = document.createElement('div');
+        userMsg.className = 'ai-msg user';
+        userMsg.innerHTML = `<div class="msg-bubble">${text}</div><div class="msg-time">${now}</div>`;
+        msgs.appendChild(userMsg);
+        input.value = '';
+        setTimeout(() => {
+            const replies = [
+                "That's a great question based on your notes…",
+                "Looking through your Chemistry notes…",
+                "Based on your notes across Organic and Thermodynamics…",
+                "I've generated 5 practice questions based on your current note…"
+            ];
+            const ai = document.createElement('div');
+            ai.className = 'ai-msg assistant';
+            ai.innerHTML = `<div class="msg-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div><div class="msg-time">${now}</div>`;
+            msgs.appendChild(ai);
+            msgs.scrollTop = msgs.scrollHeight;
+        }, 600);
+        msgs.scrollTop = msgs.scrollHeight;
+    }
+    document.getElementById('aiInput')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAiMessage(); }
+    });
+</script>
+</body>
+</html>

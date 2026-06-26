@@ -1,0 +1,121 @@
+#launcher {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  cursor: grab;
+}
+#launcher:active { cursor: grabbing; }
+
+.launcher-pill {
+  background: var(--pill-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--pill-border);
+  border-radius: 40px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 4px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset, 0 0 30px rgba(124,106,245,0.08);
+  position: relative;
+}
+.launcher-pill::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+.launcher-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--pill-border);
+  margin: 0 4px;
+}
+
+.launch-btn {
+  width: 60px; height: 44px;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: all 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+}
+.launch-btn:hover { transform: translateY(-5px) scale(1.12); }
+.launch-btn.active { transform: translateY(-3px); }
+.launch-btn .lb-icon {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  transition: all 0.18s;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.launch-btn:hover .lb-icon {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.12);
+}
+.launch-btn.active .lb-icon {
+  background: rgba(124,106,245,0.2);
+  border-color: rgba(124,106,245,0.35);
+}
+.launch-btn.active-notes .lb-icon { background: rgba(124,106,245,0.2); border-color: rgba(124,106,245,0.35); }
+.launch-btn.active-todo .lb-icon { background: rgba(76,175,130,0.15); border-color: rgba(76,175,130,0.3); }
+.launch-btn.active-cal .lb-icon { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.25); }
+.launch-btn.active-ai .lb-icon { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.25); }
+
+.lb-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+.launch-btn:hover .lb-label { color: var(--text2); }
+.launch-btn.active .lb-label { color: var(--accent2); }
+
+.active-dot {
+  position: absolute;
+  bottom: -6px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--accent2);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.launch-btn.active .active-dot { opacity: 1; }
+
+.launcher-handle {
+  width: 34px; height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  opacity: 0.3;
+  transition: opacity 0.15s;
+}
+.launcher-handle:hover { opacity: 0.7; }
+.launcher-handle:active { cursor: grabbing; }
+.handle-dots {
+  display: grid;
+  grid-template-columns: repeat(2, 4px);
+  gap: 3px;
+}
+.handle-dots span {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--text2);
+  display: block;
+}
