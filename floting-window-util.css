@@ -1,0 +1,86 @@
+/* ── WINDOW ── */
+.window {
+  position: absolute;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-win);
+  border: 1px solid var(--win-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+  min-width: 280px;
+  min-height: 200px;
+  animation: winOpen 0.22s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes winOpen {
+  from { opacity: 0; transform: scale(0.92) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.window.focused {
+  box-shadow: var(--shadow-focus);
+  border-color: var(--win-border-focus);
+}
+.window.minimized .window-body { display: none !important; }
+.window.minimized { min-height: 0; }
+
+/* Title Bar */
+.window-titlebar {
+  background: var(--titlebar);
+  border-bottom: 1px solid var(--divider);
+  padding: 0 14px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  cursor: grab;
+}
+.window-titlebar:active { cursor: grabbing; }
+.win-icon { font-size: 14px; opacity: 0.8; }
+.win-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text2);
+  flex: 1;
+}
+.win-controls { display: flex; gap: 6px; }
+.win-btn {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  transition: all 0.15s;
+  color: transparent;
+  flex-shrink: 0;
+}
+.win-btn:hover { color: rgba(0,0,0,0.6); transform: scale(1.1); }
+.win-btn.close { background: #c95a5a; }
+.win-btn.minimize { background: #c9a84c; }
+.window-body {
+  flex: 1;
+  overflow: hidden;
+  background: var(--win-bg);
+  display: flex;
+}
+.resize-handle {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 18px; height: 18px;
+  cursor: se-resize;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.window:hover .resize-handle { opacity: 1; }
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  bottom: 4px; right: 4px;
+  width: 8px; height: 8px;
+  border-right: 2px solid var(--text3);
+  border-bottom: 2px solid var(--text3);
+}
