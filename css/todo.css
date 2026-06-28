@@ -1,0 +1,120 @@
+/* ─────────────────────────────────────────────────────────
+   todo.css
+   Layout and components unique to the Planner window.
+───────────────────────────────────────────────────────── */
+#win-todo { width: 340px; height: 500px; }
+
+.todo-header {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 15px 18px 12px;
+  gap: 3px;
+}
+
+.todo-header__date {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.todo-filters {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.todo-filters .btn-outline {
+  padding: 4px 10px;
+  font-size: 10px;
+  border-radius: 20px;
+}
+
+.todo-section-label {
+  padding: 8px 14px 4px;
+}
+
+.task-row {
+  gap: 9px;
+  padding: 9px 10px;
+  margin: 2px 6px;
+  align-items: flex-start;
+}
+
+.priority-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.priority-dot--high { background: var(--accent-red);   }
+.priority-dot--med  { background: var(--accent-gold);  }
+.priority-dot--low  { background: var(--accent-green); }
+
+.task-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--text-muted);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: transparent;
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  margin-top: 1px;
+}
+
+.task-row.is-done .task-check {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: #fff;
+}
+.task-row.is-done .task-row__text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.task-row.is-done .priority-dot { opacity: 0.3; }
+
+.task-row__body { flex: 1; min-width: 0; }
+
+.task-row__text {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.task-row__due {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.todo-footer.panel-footer { padding: 12px; }
+
+/* Expanded view */
+.app-root.is-expanded {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  box-sizing: border-box;
+}
+
+.app-root.is-expanded .panel {
+  max-width: none;       /* allow full width */
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}

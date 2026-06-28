@@ -1,0 +1,89 @@
+/* ─────────────────────────────────────────────────────────
+   page-style.css
+   Outermost shell: reset, canvas, scrollbars, keyframes,
+   and view-toggle button for all sub‑apps.
+───────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  font-family: var(--font-ui);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  cursor: default;
+}
+
+#desktop {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 18% 8%,
+      rgba(124,106,245,0.045) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 82% 88%,
+      rgba(201,168,76,0.032) 0%, transparent 55%),
+    var(--bg-canvas);
+}
+
+#desktop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--divider); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border); }
+*  { scrollbar-width: thin; scrollbar-color: var(--divider) transparent; }
+
+@keyframes win-open {
+  from { opacity: 0; transform: scale(0.91) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 1;    }
+}
+
+.u-hidden { display: none !important; }
+
+/* ── View toggle button (used by every sub‑app page) ─── */
+.view-toggle {
+  position: fixed;
+  top: 10px;
+  left: 97%;
+  transform: translateX(-100%);
+  transform: translateY(-25%);
+  z-index: 10000;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-window-alt);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.view-toggle:hover {
+  background: var(--accent-violet-bg);
+  color: var(--accent-violet);
+}

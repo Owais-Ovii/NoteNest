@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoteNest</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/page-style.css">
+  <link rel="stylesheet" href="css/floating-window.css">
+  <link rel="stylesheet" href="css/panel-utilities.css">
+  <link rel="stylesheet" href="css/launcher.css">
+</head>
+<body>
+<div id="desktop">
+
+  <!-- Notes Window -->
+  <div class="win" id="win-notes" style="display:none;">
+    <div class="win-bar">
+      <i class="ri-file-text-line win-bar__icon"></i>
+      <span class="win-bar__title">Notes</span>
+      <div class="win-bar__controls">
+<button class="win-ctrl win-ctrl--minimize" data-win-action="minimise" data-win-id="notes" aria-label="Minimise">
+  <i class="ri-subtract-line"></i>
+</button>
+<button class="win-ctrl win-ctrl--close" data-win-action="close" data-win-id="notes" aria-label="Close">
+  <i class="ri-close-line"></i>
+</button>
+<button class="win-ctrl win-ctrl--popout" data-win-action="popout" data-win-id="notes" aria-label="Open in new tab" title="Open in new tab">
+  <i class="ri-external-link-line"></i>
+</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <iframe class="win-iframe" data-src="notes.html" title="Notes"></iframe>
+    </div>
+    <div class="win-resizer"></div>
+    <button class="win-view-toggle" data-win-id="notes" aria-label="Toggle view">
+  <i class="ri-expand-left-right-line"></i>
+</button>
+  </div>
+
+  <!-- Planner Window -->
+  <div class="win" id="win-todo" style="display:none;">
+    <div class="win-bar">
+      <i class="ri-todo-line win-bar__icon"></i>
+      <span class="win-bar__title">Planner</span>
+      <div class="win-bar__controls">
+        <button class="win-ctrl win-ctrl--minimize" data-win-action="minimise" data-win-id="todo"></button>
+        <button class="win-ctrl win-ctrl--close" data-win-action="close" data-win-id="todo"></button>
+        <button class="win-ctrl win-ctrl--popout" data-win-action="popout" data-win-id="todo" title="Open in new tab">
+          <i class="ri-external-link-line"></i>
+        </button>
+      </div>
+    </div>
+    <div class="win-body">
+      <iframe class="win-iframe" data-src="planner.html" title="Planner"></iframe>
+    </div>
+    <div class="win-resizer"></div>
+    
+  </div>
+
+  <!-- Calendar Window -->
+  <div class="win" id="win-calendar" style="display:none;">
+    <div class="win-bar">
+      <i class="ri-calendar-2-line win-bar__icon"></i>
+      <span class="win-bar__title">Calendar</span>
+      <div class="win-bar__controls">
+        <button class="win-ctrl win-ctrl--minimize" data-win-action="minimise" data-win-id="calendar"></button>
+        <button class="win-ctrl win-ctrl--close" data-win-action="close" data-win-id="calendar"></button>
+        <button class="win-ctrl win-ctrl--popout" data-win-action="popout" data-win-id="calendar" title="Open in new tab">
+          <i class="ri-external-link-line"></i>
+        </button>
+      </div>
+    </div>
+    <div class="win-body">
+      <iframe class="win-iframe" data-src="calendar.html" title="Calendar"></iframe>
+    </div>
+    <div class="win-resizer"></div>
+  </div>
+
+  <!-- AI Assistant Window -->
+  <div class="win" id="win-ai" style="display:none;">
+    <div class="win-bar">
+      <i class="ri-sparkling-2-line win-bar__icon"></i>
+      <span class="win-bar__title">AI Assistant</span>
+      <div class="win-bar__controls">
+        <button class="win-ctrl win-ctrl--minimize" data-win-action="minimise" data-win-id="ai"></button>
+        <button class="win-ctrl win-ctrl--close" data-win-action="close" data-win-id="ai"></button>
+        <button class="win-ctrl win-ctrl--popout" data-win-action="popout" data-win-id="ai" title="Open in new tab">
+          <i class="ri-external-link-line"></i>
+        </button>
+      </div>
+    </div>
+    <div class="win-body">
+      <iframe class="win-iframe" data-src="ai.html" title="AI Assistant"></iframe>
+    </div>
+    <div class="win-resizer"></div>
+  </div>
+
+  <!-- Launcher -->
+  <div id="launcher" class="launcher">
+    <div class="launcher__pill">
+      <div class="launcher__handle">
+        <div class="launcher__handle-dots">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="launcher__divider"></div>
+      <button class="launch-btn" id="launch-notes" onclick="toggleWindow('notes')">
+        <div class="launch-btn__icon"><i class="ri-file-text-line"></i></div>
+        <div class="launch-btn__label">Notes</div>
+        <div class="launch-btn__dot"></div>
+        <div class="launch-btn__tooltip">Notes</div>
+      </button>
+      <button class="launch-btn" id="launch-todo" onclick="toggleWindow('todo')">
+        <div class="launch-btn__icon"><i class="ri-todo-line"></i></div>
+        <div class="launch-btn__label">Planner</div>
+        <div class="launch-btn__dot"></div>
+        <div class="launch-btn__tooltip">Planner</div>
+      </button>
+      <button class="launch-btn" id="launch-calendar" onclick="toggleWindow('calendar')">
+        <div class="launch-btn__icon"><i class="ri-calendar-2-line"></i></div>
+        <div class="launch-btn__label">Calendar</div>
+        <div class="launch-btn__dot"></div>
+        <div class="launch-btn__tooltip">Calendar</div>
+      </button>
+      <button class="launch-btn" id="launch-ai" onclick="toggleWindow('ai')">
+        <div class="launch-btn__icon"><i class="ri-sparkling-2-line"></i></div>
+        <div class="launch-btn__label">AI</div>
+        <div class="launch-btn__dot"></div>
+        <div class="launch-btn__tooltip">AI Assistant</div>
+      </button>
+      <div class="launcher__divider"></div>
+      <button class="launch-btn" onclick="alert('OCR Digitizer — Phase 4')">
+        <div class="launch-btn__icon"><i class="ri-camera-line"></i></div>
+        <div class="launch-btn__label">Scan</div>
+        <div class="launch-btn__tooltip">Scan &amp; Digitize</div>
+      </button>
+    </div>
+  </div>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>

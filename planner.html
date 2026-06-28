@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planner</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/page-style.css">
+  <link rel="stylesheet" href="css/panel-utilities.css">
+  <link rel="stylesheet" href="css/todo.css">
+</head>
+<body>
+<div class="app-root">
+  <button class="view-toggle" title="Toggle simple/expanded view">
+    <i class="ri-expand-left-right-line"></i>
+  </button>
+  <div class="panel">
+    <div class="panel-header todo-header">
+      <div class="todo-header__date">Saturday, April 18</div>
+      <div class="label-micro">3 tasks remaining · 2 completed</div>
+      <div class="todo-filters">
+        <button class="btn-outline btn-outline--subtle todo-filter is-active">All</button>
+        <button class="btn-outline btn-outline--subtle todo-filter">Today</button>
+        <button class="btn-outline btn-outline--subtle todo-filter">Upcoming</button>
+        <button class="btn-outline btn-outline--subtle todo-filter">Done</button>
+      </div>
+    </div>
+    <div class="panel-scroll todo-list">
+      <div class="label-caps todo-section-label">Overdue</div>
+      <div class="list-row task-row">
+        <div class="priority-dot priority-dot--high"></div>
+        <div class="task-check"><i class="ri-check-line"></i></div>
+        <div class="task-row__body">
+          <div class="task-row__text">Submit Organic Chemistry lab report</div>
+          <div class="task-row__due">
+            <i class="ri-error-warning-line"></i>
+            <span class="label-micro is-danger">Due Apr 16 · Chemistry</span>
+          </div>
+        </div>
+      </div>
+      <div class="label-caps todo-section-label">Today</div>
+      <div class="list-row task-row">
+        <div class="priority-dot priority-dot--med"></div>
+        <div class="task-check"><i class="ri-check-line"></i></div>
+        <div class="task-row__body">
+          <div class="task-row__text">Review SN1/SN2 mechanisms</div>
+          <div class="task-row__due">
+            <i class="ri-time-line"></i>
+            <span class="label-micro is-warning">5:00 PM · Chemistry</span>
+          </div>
+        </div>
+      </div>
+      <div class="list-row task-row">
+        <div class="priority-dot priority-dot--low"></div>
+        <div class="task-check"><i class="ri-check-line"></i></div>
+        <div class="task-row__body">
+          <div class="task-row__text">Read Chapter 7 — Thermodynamics</div>
+          <div class="task-row__due">
+            <i class="ri-calendar-line"></i>
+            <span class="label-micro">Today · Physics</span>
+          </div>
+        </div>
+      </div>
+      <div class="label-caps todo-section-label">Completed</div>
+      <div class="list-row task-row is-done">
+        <div class="priority-dot priority-dot--low"></div>
+        <div class="task-check"><i class="ri-check-line"></i></div>
+        <div class="task-row__body">
+          <div class="task-row__text">Complete Math Problem Set 4</div>
+          <div class="task-row__due"><span class="label-micro" style="opacity:0.5;">Done · 11:30 AM</span></div>
+        </div>
+      </div>
+      <div class="list-row task-row is-done">
+        <div class="priority-dot priority-dot--low"></div>
+        <div class="task-check"><i class="ri-check-line"></i></div>
+        <div class="task-row__body">
+          <div class="task-row__text">Email Prof. Sharma re: project extension</div>
+          <div class="task-row__due"><span class="label-micro" style="opacity:0.5;">Done · 9:00 AM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer todo-footer">
+      <div class="field-row" style="flex:1;">
+        <input class="field-row__input todo-input" type="text" placeholder="Add a task…" aria-label="New task">
+        <button class="btn-solid btn-solid--violet btn-solid--icon todo-submit" aria-label="Add task">
+          <i class="ri-add-line"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const isIframe = window.self !== window.top;
+    const root = document.querySelector('.app-root');
+    const toggleBtn = document.querySelector('.view-toggle');
+    if (!isIframe) root.classList.add('is-expanded');
+    toggleBtn.addEventListener('click', () => root.classList.toggle('is-expanded'));
+
+    // Filter pills
+    document.querySelectorAll('.todo-filter').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.todo-filter').forEach(p => p.classList.remove('is-active'));
+        pill.classList.add('is-active');
+      });
+    });
+
+    // Checkbox toggle
+    document.querySelectorAll('.task-check').forEach(check => {
+      check.addEventListener('click', e => {
+        e.stopPropagation();
+        check.closest('.task-row').classList.toggle('is-done');
+      });
+    });
+
+    // Add task
+    const input = document.querySelector('.todo-input');
+    const submit = document.querySelector('.todo-submit');
+    function addTask() {
+      const text = input.value.trim();
+      if (!text) return;
+      const row = document.createElement('div');
+      row.className = 'list-row task-row';
+      row.innerHTML = `
+        <div class="priority-dot priority-dot--low"></div>
+        <div class="task-check"><i class="ri-check-line"></i></div>
+        <div class="task-row__body">
+          <div class="task-row__text">${escHtml(text)}</div>
+          <div class="task-row__due">
+            <i class="ri-calendar-line"></i>
+            <span class="label-micro">Today</span>
+          </div>
+        </div>`;
+      row.querySelector('.task-check').addEventListener('click', e => {
+        e.stopPropagation();
+        row.classList.toggle('is-done');
+      });
+      document.querySelector('.todo-list').appendChild(row);
+      input.value = '';
+      document.querySelector('.todo-list').scrollTop = document.querySelector('.todo-list').scrollHeight;
+    }
+    submit.addEventListener('click', addTask);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  })();
+</script>
+</body>
+</html>

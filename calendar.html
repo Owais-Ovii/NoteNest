@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/page-style.css">
+  <link rel="stylesheet" href="css/panel-utilities.css">
+  <link rel="stylesheet" href="css/calendar.css">
+</head>
+<body>
+<div class="app-root">
+  
+  <div class="panel">
+    <div class="panel-header cal-header">
+      <button class="icon-btn icon-btn--lg cal-nav" aria-label="Previous month">
+        <i class="ri-arrow-left-s-line"></i>
+      </button>
+      <div class="cal-header__month">
+        April <span class="cal-header__year">2026</span>
+      </div>
+      <button class="icon-btn icon-btn--lg cal-nav" aria-label="Next month">
+        <i class="ri-arrow-right-s-line"></i>
+      </button>
+    </div>
+    <div class="cal-body">
+      <div class="cal-weekdays">
+        <div class="cal-weekday label-caps">Su</div><div class="cal-weekday label-caps">Mo</div>
+        <div class="cal-weekday label-caps">Tu</div><div class="cal-weekday label-caps">We</div>
+        <div class="cal-weekday label-caps">Th</div><div class="cal-weekday label-caps">Fr</div>
+        <div class="cal-weekday label-caps">Sa</div>
+      </div>
+      <div class="cal-days" id="cal-days"></div>
+    </div>
+    <div class="panel-footer cal-events">
+      <div class="list-row cal-event" style="border-color:var(--accent-red);">
+        <div class="cal-event__text">Chem Lab Report Due</div>
+        <span class="label-micro is-danger">Overdue</span>
+      </div>
+      <div class="list-row cal-event" style="border-color:var(--accent-violet);">
+        <div class="cal-event__text">Physics Midterm Exam</div>
+        <span class="label-micro">Apr 24</span>
+      </div>
+      <div class="list-row cal-event" style="border-color:var(--accent-gold);">
+        <div class="cal-event__text">Math Assignment #5</div>
+        <span class="label-micro">Apr 30</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const isIframe = window.self !== window.top;
+    const root = document.querySelector('.app-root');
+    const toggleBtn = document.querySelector('.view-toggle');
+    if (!isIframe) root.classList.add('is-expanded');
+    toggleBtn.addEventListener('click', () => root.classList.toggle('is-expanded'));
+
+    function renderCalendar() {
+      const today = new Date(2026, 3, 18);
+      const y = today.getFullYear(), m = today.getMonth();
+      const firstDay = new Date(y, m, 1).getDay();
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+      const prevMonthDays = new Date(y, m, 0).getDate();
+      const eventDays = new Set([16, 24, 30]);
+      const grid = document.getElementById('cal-days');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      function makeDay(num, otherMonth, isToday, hasEvent) {
+        const div = document.createElement('div');
+        div.className = 'cal-day' + (otherMonth ? ' is-other-month' : '') + (isToday ? ' is-today' : '');
+        div.innerHTML = `<span class="cal-day__num">${num}</span>` + (hasEvent ? '<div class="cal-day__dot"></div>' : '');
+        div.addEventListener('click', () => {
+          document.querySelectorAll('.cal-day').forEach(c => c.classList.remove('is-selected'));
+          div.classList.add('is-selected');
+        });
+        return div;
+      }
+
+      for (let i = 0; i < firstDay; i++) {
+        grid.appendChild(makeDay(prevMonthDays - firstDay + i + 1, true, false, false));
+      }
+      for (let d = 1; d <= daysInMonth; d++) {
+        grid.appendChild(makeDay(d, false, d === today.getDate(), eventDays.has(d)));
+      }
+    }
+
+    renderCalendar();
+  })();
+</script>
+</body>
+</html>

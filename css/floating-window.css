@@ -1,0 +1,165 @@
+/* ─────────────────────────────────────────────────────────
+   floating-window.css
+   Window chrome shared by every floating window.
+───────────────────────────────────────────────────────── */
+.win {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-window);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-win);
+  min-width: 280px;
+  min-height: 200px;
+  transition: box-shadow var(--t-base), border-color var(--t-base);
+  animation: win-open var(--t-spring);
+}
+
+.win--focused {
+  box-shadow: var(--shadow-win-focused);
+  border-color: var(--border-focus);
+}
+
+.win--minimized .win-body { display: none; }
+.win--minimized            { min-height: 0; }
+
+.win-bar {
+  flex-shrink: 0;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  background: var(--bg-titlebar);
+  border-bottom: 1px solid var(--divider);
+  cursor: grab;
+}
+.win-bar:active { cursor: grabbing; }
+
+.win-bar__icon {
+  font-size: 15px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.win-bar__title {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.win-bar__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── .win-ctrl ───────────────────────────────────────── */
+/* ── Window control buttons ───────────────────────── */
+.win-ctrl {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: transparent;            /* icons hidden by default */
+  flex-shrink: 0;
+  transition: transform var(--t-fast), color var(--t-fast), background var(--t-fast);
+}
+
+/* Show icon on hover */
+.win-ctrl:hover {
+  color: rgba(255,255,255,0.9);
+  transform: scale(1.15);
+}
+
+/* Colour variants */
+.win-ctrl--close    { background: var(--accent-red);   }
+.win-ctrl--minimize { background: var(--accent-gold);  }
+.win-ctrl--popout   { background: #2d6ee0;             }   /* blue popout */
+.win-ctrl--popout:hover { background: #3f80f0; }
+
+.win-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  background: var(--bg-window);
+}
+
+/* NEW: iframe that fills the win-body */
+.win-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: var(--bg-window);
+}
+
+.win-resizer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  cursor: se-resize;
+  opacity: 0;
+  transition: opacity var(--t-base);
+}
+.win:hover .win-resizer { opacity: 1; }
+
+.win-resizer::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid var(--text-muted);
+  border-bottom: 1.5px solid var(--text-muted);
+}
+/* ── View‑toggle button (bottom‑right cutout) ─────── */
+.win-view-toggle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-canvas);        /* matches desktop background */
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 6;
+  opacity: 0;
+  transform: translate(40%, 40%);     /* more than half outside the corner */
+  transition: opacity var(--t-base), color var(--t-base), background var(--t-base);
+  pointer-events: none;
+}
+
+/* Reveal on window hover */
+.win:hover .win-view-toggle,
+.win--focused .win-view-toggle {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.win-view-toggle:hover {
+  color: var(--accent-violet);
+  background: var(--bg-window-alt);
+  border-color: var(--accent-violet-border);
+}
