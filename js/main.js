@@ -326,18 +326,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initWindowResize();
   initLauncherDrag();
 
-  // ── Cutout view‑toggle button handler ──
-  document.addEventListener('click', e => {
-    const btn = e.target.closest('.win-view-toggle');
-    if (!btn) return;
-    const winId = btn.dataset.winId;
-    const win = WIN[winId];
-    if (!win?.el) return;
-    const iframe = win.el.querySelector('.win-iframe');
-    if (iframe && iframe.contentWindow) {
-      iframe.contentWindow.postMessage({ action: 'toggleView' }, '*');
-    }
-  });
+
   
   setTimeout(() => openWin('notes'),    80);
   setTimeout(() => openWin('todo'),    220);

@@ -128,38 +128,3 @@
   border-right: 1.5px solid var(--text-muted);
   border-bottom: 1.5px solid var(--text-muted);
 }
-/* ── View‑toggle button (bottom‑right cutout) ─────── */
-.win-view-toggle {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--bg-canvas);        /* matches desktop background */
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 16px;
-  z-index: 6;
-  opacity: 0;
-  transform: translate(40%, 40%);     /* more than half outside the corner */
-  transition: opacity var(--t-base), color var(--t-base), background var(--t-base);
-  pointer-events: none;
-}
-
-/* Reveal on window hover */
-.win:hover .win-view-toggle,
-.win--focused .win-view-toggle {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.win-view-toggle:hover {
-  color: var(--accent-violet);
-  background: var(--bg-window-alt);
-  border-color: var(--accent-violet-border);
-}
