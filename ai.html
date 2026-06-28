@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Assistant</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/page-style.css">
+  <link rel="stylesheet" href="css/panel-utilities.css">
+  <link rel="stylesheet" href="css/ai.css">
+</head>
+<body>
+<div class="app-root">
+  <button class="view-toggle" title="Toggle simple/expanded view">
+    <i class="ri-expand-left-right-line"></i>
+  </button>
+  <div class="panel">
+    <div class="panel-header ai-header">
+      <span class="pulse-dot pulse-dot--green"></span>
+      <div class="ai-header__text">
+        <div class="ai-header__name">NoteNest AI</div>
+        <div class="ai-header__sub">Connected to your note library</div>
+      </div>
+      <div class="badge badge--gold">
+        <i class="ri-file-text-line"></i> Reaction Mechanisms
+      </div>
+    </div>
+    <div class="panel-scroll ai-messages" id="ai-messages">
+      <div class="ai-msg ai-msg--assistant">
+        <div class="ai-bubble">Hello! I can see you're working on <em>Reaction Mechanisms</em>. I have context from all your Chemistry notes — what would you like help with?</div>
+        <div class="label-micro">2:14 PM</div>
+      </div>
+      <div class="ai-msg ai-msg--user">
+        <div class="ai-bubble">Explain the difference between SN1 and SN2 more simply</div>
+        <div class="label-micro">2:15 PM</div>
+      </div>
+      <div class="ai-msg ai-msg--assistant">
+        <div class="ai-bubble"><strong>SN2</strong> is a one-step mugging — the nucleophile attacks at exactly the same moment the leaving group runs away. Everything happens at once, so primary substrates react fastest.<br><br><strong>SN1</strong> is a two-act play — the leaving group leaves first, creating a flat carbocation. The nucleophile then attacks from either face, which is why you get a racemic mixture.</div>
+        <div class="label-micro">2:15 PM</div>
+      </div>
+    </div>
+    <div class="ai-suggestions">
+      <button class="btn-outline btn-outline--subtle ai-chip">Generate practice questions</button>
+      <button class="btn-outline btn-outline--subtle ai-chip">Summarise this note</button>
+      <button class="btn-outline btn-outline--subtle ai-chip">Find gaps in my notes</button>
+      <button class="btn-outline btn-outline--subtle ai-chip">Define carbocation</button>
+    </div>
+    <div class="panel-footer ai-footer">
+      <div class="field-row" style="flex:1;">
+        <textarea class="field-row__input" id="ai-input" rows="1" placeholder="Ask anything about your notes…" aria-label="AI prompt"></textarea>
+        <button class="btn-solid btn-solid--violet btn-solid--icon" id="ai-send" aria-label="Send">
+          <i class="ri-arrow-up-line"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const isIframe = window.self !== window.top;
+    const root = document.querySelector('.app-root');
+    const toggleBtn = document.querySelector('.view-toggle');
+    if (!isIframe) root.classList.add('is-expanded');
+    toggleBtn.addEventListener('click', () => root.classList.toggle('is-expanded'));
+
+    const input = document.getElementById('ai-input');
+    const sendBtn = document.getElementById('ai-send');
+    const messages = document.getElementById('ai-messages');
+    const chips = document.querySelectorAll('.ai-chip');
+
+    const replies = [
+      'Based on your Chemistry notes, the key distinction here lies in the timing of bond formation and breaking during the reaction.',
+      'Your Organic section has several related notes on this topic — would you like me to cross-reference them?',
+      'I can generate five practice questions from your current note. Shall I add them as a new note?',
+      'This term appears across three of your subjects. Here is how each context defines it differently.',
+      'Looking at your Thermodynamics notes, the concept you\'re asking about connects directly to what you wrote on April 15.',
+    ];
+
+    function appendMsg(text, role, time) {
+      const div = document.createElement('div');
+      div.className = `ai-msg ai-msg--${role}`;
+      div.innerHTML = `<div class="ai-bubble">${escHtml(text)}</div><div class="label-micro">${time}</div>`;
+      messages.appendChild(div);
+    }
+
+    function send() {
+      const text = input.value.trim();
+      if (!text) return;
+      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      appendMsg(text, 'user', now);
+      input.value = '';
+      setTimeout(() => {
+        const reply = replies[Math.floor(Math.random() * replies.length)];
+        appendMsg(reply, 'assistant', now);
+        messages.scrollTop = messages.scrollHeight;
+      }, 650);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', send);
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+    });
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        input.value = chip.textContent.trim();
+        send();
+      });
+    });
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,52 +1,7 @@
 /* ─────────────────────────────────────────────────────────
    panel-utilities.css
-   Shared structural utility classes consumed inside every
-   application window (Notes, Planner, Calendar, AI).
-
-   WHY THIS FILE EXISTS
-   Each application window has a different visual interface
-   but nearly all of them contain the same structural
-   patterns.  The table below maps each utility class to
-   every element in the project that uses it:
-
-   .panel          notes-grid, todo .panel, cal .panel, ai .panel
-   .panel-header   notes sidebar header, note-list header,
-                   editor toolbar bar, todo header, cal header,
-                   ai header
-   .panel-footer   note editor status bar, todo add-task bar,
-                   cal events section, ai input bar
-   .panel-scroll   notes section list, note card list,
-                   todo task list, ai message list
-   .panel-split    notes list | editor two-column layout
-   .label-caps     win-bar title, sidebar section heading,
-                   todo section dividers, calendar weekday names,
-                   launcher button labels
-   .label-micro    note card dates, task due strings,
-                   cal event times, ai message timestamps
-   .icon-btn       editor toolbar buttons, calendar nav arrows,
-                   sidebar add-section button, tab bar add button
-   .btn-solid      note Save button, todo add button, ai send button
-   .btn-outline    Ask AI button, todo filter pills,
-                   ai suggestion chips
-   .badge          note tags, section note counts,
-                   ai context indicator
-   .list-row       notes section rows, note cards,
-                   todo task rows, calendar event rows
-   .field-row      notes search bar, todo add input, ai prompt input
-   .divider-v      editor toolbar separators, launcher group dividers
-   .pulse-dot      autosave indicator, AI online indicator
-
-   Defining each pattern once here means individual app
-   CSS files only describe layout and components that are
-   genuinely unique to that application.
+   Shared structural utility classes.
 ───────────────────────────────────────────────────────── */
-
-/* ── .panel ──────────────────────────────────────────── */
-/* Full-size flex-column container that fills .win-body.
-   Used as the top-level layout root for every app window.
-   Establishes the column axis so header + scroll + footer
-   children stack correctly and the scroll region fills
-   all remaining height automatically.                    */
 .panel {
   display: flex;
   flex-direction: column;
@@ -55,13 +10,6 @@
   overflow: hidden;
 }
 
-/* ── .panel-header ───────────────────────────────────── */
-/* Horizontal bar pinned to the top of a .panel or sub-
-   panel.  flex-shrink:0 prevents it from being squashed
-   when the window is resized small.  border-bottom gives
-   a clean visual separation from the content below.
-   padding:12px 16px is the default; app-specific CSS
-   files override this when different spacing is needed.  */
 .panel-header {
   display: flex;
   align-items: center;
@@ -72,11 +20,6 @@
   background: inherit;
 }
 
-/* ── .panel-footer ───────────────────────────────────── */
-/* Horizontal bar pinned to the bottom of a .panel.
-   Mirror of .panel-header but with border-top instead
-   of border-bottom.  Used for input areas, action bars,
-   and status strips.                                    */
 .panel-footer {
   display: flex;
   align-items: center;
@@ -86,22 +29,12 @@
   flex-shrink: 0;
 }
 
-/* ── .panel-scroll ───────────────────────────────────── */
-/* Scrollable flex-grow region that fills all vertical
-   space between .panel-header and .panel-footer.
-   overflow-x:hidden prevents horizontal scrollbars from
-   appearing when items have left/right margins.          */
 .panel-scroll {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* ── .panel-split ────────────────────────────────────── */
-/* Two-column side-by-side layout inside a .panel.
-   Column widths must be set via a grid-template-columns
-   override in the consuming component's CSS file since
-   the ratio varies per use case.                        */
 .panel-split {
   display: grid;
   width: 100%;
@@ -109,10 +42,6 @@
   overflow: hidden;
 }
 
-/* ── .label-caps ─────────────────────────────────────── */
-/* Uppercase micro label used wherever a section, group,
-   or panel needs a visible heading that does not compete
-   with body content.  Intentionally muted colour.       */
 .label-caps {
   font-family: var(--font-ui);
   font-size: 10px;
@@ -123,10 +52,6 @@
   line-height: 1;
 }
 
-/* ── .label-micro ────────────────────────────────────── */
-/* Minimal meta text for timestamps, due-date strings,
-   and status captions.  Three semantic colour modifiers
-   communicate state without needing separate classes.   */
 .label-micro {
   font-family: var(--font-ui);
   font-size: 10px;
@@ -141,11 +66,6 @@
 .label-micro.is-warning { color: var(--accent-gold);  }
 .label-micro.is-success { color: var(--accent-green); }
 
-/* ── .icon-btn ───────────────────────────────────────── */
-/* Icon-only interactive button.  No background or border
-   at rest; a subtle fill appears on hover.  28×28 is the
-   base touch target; .icon-btn--lg provides a larger
-   variant for calendar navigation.                      */
 .icon-btn {
   display: flex;
   align-items: center;
@@ -170,7 +90,6 @@
   color: var(--accent-violet);
 }
 
-/* Larger variant — calendar prev/next arrows */
 .icon-btn--lg {
   width: 30px;
   height: 30px;
@@ -180,11 +99,6 @@
 }
 .icon-btn--lg:hover { border-color: var(--border-focus); }
 
-/* ── .btn-solid ──────────────────────────────────────── */
-/* Solid filled action button.  All instances — Save note,
-   Add task, Send AI message — share the same base shape,
-   font, and hover lift.  Only the background colour and
-   size differ, handled by the modifier classes below.   */
 .btn-solid {
   display: inline-flex;
   align-items: center;
@@ -204,11 +118,9 @@
 }
 .btn-solid:hover { transform: translateY(-1px); }
 
-/* Violet variant — primary action across the interface */
 .btn-solid--violet            { background: var(--accent-violet); color: #fff; }
 .btn-solid--violet:hover      { background: var(--accent-violet-light); }
 
-/* Icon-only square variant — todo submit, AI send */
 .btn-solid--icon {
   padding: 0;
   width: 30px;
@@ -217,10 +129,6 @@
   font-size: 15px;
 }
 
-/* ── .btn-outline ────────────────────────────────────── */
-/* Ghost/outline button with no fill at rest.  Used for
-   secondary actions that should be present but not
-   dominant in the visual hierarchy.                     */
 .btn-outline {
   display: inline-flex;
   align-items: center;
@@ -238,7 +146,6 @@
   transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
 }
 
-/* Gold variant — Ask AI button in the note editor */
 .btn-outline--gold {
   color: var(--accent-gold);
   border: 1px solid var(--accent-gold-border);
@@ -246,7 +153,6 @@
 }
 .btn-outline--gold:hover { background: rgba(201,168,76,0.18); }
 
-/* Subtle variant — todo filter pills, AI suggestion chips */
 .btn-outline--subtle {
   color: var(--text-muted);
   border: 1px solid var(--divider);
@@ -256,18 +162,12 @@
   color: var(--accent-violet);
   background: var(--accent-violet-bg);
 }
-/* Active state for filter pills */
 .btn-outline--subtle.is-active {
   border-color: var(--accent-violet-border);
   color: var(--accent-violet);
   background: var(--accent-violet-bg);
 }
 
-/* ── .badge ──────────────────────────────────────────── */
-/* Small pill-shaped inline badge used for counts, tags,
-   and context labels.  Three colour variants cover all
-   current use cases; more can be added by extending
-   with a new --colour modifier.                         */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -283,21 +183,18 @@
   line-height: 1.4;
 }
 
-/* Violet — note content tags */
 .badge--violet {
   background: var(--accent-violet-bg);
   border: 1px solid var(--accent-violet-border);
   color: var(--accent-violet);
 }
 
-/* Gold — AI context label */
 .badge--gold {
   background: var(--accent-gold-bg);
   border: 1px solid var(--accent-gold-border);
   color: var(--accent-gold);
 }
 
-/* Muted — section note counts */
 .badge--muted {
   background: rgba(255,255,255,0.05);
   border: 1px solid transparent;
@@ -305,12 +202,6 @@
   font-size: 10px;
 }
 
-/* ── .list-row ───────────────────────────────────────── */
-/* Base interactive list item.  Provides hover background
-   and active state; padding, gap, and borders are added
-   by the component extending this class (section-row,
-   note-card, task-row, cal-event) to accommodate their
-   unique internal layouts.                              */
 .list-row {
   display: flex;
   align-items: flex-start;
@@ -325,12 +216,6 @@
   border-color: var(--accent-violet-border);
 }
 
-/* ── .field-row ──────────────────────────────────────── */
-/* Styled container for all text inputs and textareas.
-   The :focus-within border-color change applies to all
-   three input contexts (search, add-task, AI prompt)
-   without any per-component CSS.  The container owns all
-   visual chrome; the .field-row__input inside is bare.  */
 .field-row {
   display: flex;
   align-items: center;
@@ -343,10 +228,6 @@
 }
 .field-row:focus-within { border-color: var(--accent-violet-border); }
 
-/* ── .field-row__input ───────────────────────────────── */
-/* Bare input or textarea inside a .field-row.  All
-   browser default input chrome is stripped here so the
-   .field-row container is the sole source of appearance. */
 .field-row__input {
   flex: 1;
   min-width: 0;
@@ -361,11 +242,6 @@
 }
 .field-row__input::placeholder { color: var(--text-muted); }
 
-/* ── .divider-v ──────────────────────────────────────── */
-/* Thin vertical rule used to separate control groups in
-   horizontal bars — the editor toolbar and the launcher
-   pill.  align-self:stretch makes it fill the bar height
-   automatically without needing explicit pixel heights.  */
 .divider-v {
   display: block;
   width: 1px;
@@ -375,10 +251,6 @@
   margin: 4px 4px;
 }
 
-/* ── .pulse-dot ──────────────────────────────────────── */
-/* Small circular indicator that pulses to communicate a
-   live or active state.  Used for the AI online status
-   and the note autosave confirmation dot.               */
 .pulse-dot {
   width: 7px;
   height: 7px;

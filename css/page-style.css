@@ -1,13 +1,8 @@
 /* ─────────────────────────────────────────────────────────
    page-style.css
-   Everything that belongs to the outermost shell of the
-   application — the browser reset, the body, the full-
-   viewport desktop canvas, global scrollbar overrides,
-   and the shared @keyframes referenced by multiple
-   components.  Nothing component-specific lives here.
+   Outermost shell: reset, canvas, scrollbars, keyframes,
+   and view-toggle button for all sub‑apps.
 ───────────────────────────────────────────────────────── */
-
-/* ── Reset ───────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -23,17 +18,10 @@ html, body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent text selection while dragging windows */
   user-select: none;
   cursor: default;
 }
 
-/* ── Desktop canvas ──────────────────────────────────── */
-/* The full-viewport surface on which all floating windows
-   are absolutely positioned.  Two radial gradients create
-   a subtle directional glow — one cool-violet in the top-
-   left, one warm-gold in the bottom-right — giving depth
-   without competing with window content.                  */
 #desktop {
   position: relative;
   width: 100vw;
@@ -47,8 +35,6 @@ html, body {
     var(--bg-canvas);
 }
 
-/* Film-grain noise overlay — adds texture at very low
-   opacity so the canvas does not look flat.             */
 #desktop::before {
   content: '';
   position: absolute;
@@ -58,30 +44,46 @@ html, body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
 }
 
-/* ── Global scrollbars ───────────────────────────────── */
-/* Applied globally so every scroll region in every window
-   inherits a consistent minimal scrollbar style.         */
 ::-webkit-scrollbar        { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { background: var(--divider); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border); }
 *  { scrollbar-width: thin; scrollbar-color: var(--divider) transparent; }
 
-/* ── Shared keyframes ────────────────────────────────── */
-
-/* Window open: spring scale from slightly below.
-   Used by .win in floating-window.css.                  */
 @keyframes win-open {
   from { opacity: 0; transform: scale(0.91) translateY(10px); }
   to   { opacity: 1; transform: scale(1)    translateY(0);    }
 }
 
-/* Pulsing dot for live status indicators.
-   Used by .pulse-dot in panel-utilities.css.            */
 @keyframes pulse {
   0%, 100% { opacity: 0.35; }
   50%       { opacity: 1;    }
 }
 
-/* ── Utility: visually hidden ────────────────────────── */
 .u-hidden { display: none !important; }
+
+/* ── View toggle button (used by every sub‑app page) ─── */
+.view-toggle {
+  position: fixed;
+  top: 10px;
+  left: 97%;
+  transform: translateX(-100%);
+  transform: translateY(-25%);
+  z-index: 10000;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-window-alt);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.view-toggle:hover {
+  background: var(--accent-violet-bg);
+  color: var(--accent-violet);
+}

@@ -1,27 +1,11 @@
 /* ─────────────────────────────────────────────────────────
    ai.css
    Layout and components unique to the AI Assistant window.
-   The window uses .panel for its top-level flex-column,
-   .panel-header for the status/context bar, .panel-scroll
-   for the message history, and .panel-footer for the
-   prompt input — all from panel-utilities.css.  Only what
-   is unique to the chat interface lives here.
 ───────────────────────────────────────────────────────── */
-
-/* ── Initial window size ─────────────────────────────── */
 #win-ai { width: 380px; height: 500px; }
 
-/* ═══════════════════════════════════════════════════════
-   AI HEADER
-═══════════════════════════════════════════════════════ */
-
-/* ── .ai-header ──────────────────────────────────────── */
-/* Overrides .panel-header padding and adds the online
-   indicator dot on the left.  The .pulse-dot, the text
-   block, and the context badge are flex children.       */
 .ai-header { padding: 12px 16px; }
 
-/* Text block containing name and subtitle */
 .ai-header__text { flex: 1; }
 .ai-header__name {
   font-family: var(--font-ui);
@@ -39,14 +23,6 @@
   margin-top: 2px;
 }
 
-/* ═══════════════════════════════════════════════════════
-   MESSAGE HISTORY
-═══════════════════════════════════════════════════════ */
-
-/* ── .ai-messages ────────────────────────────────────── */
-/* Extends .panel-scroll with flex-column layout so that
-   new messages stack downward naturally.  gap:12px
-   creates consistent breathing room between bubbles.    */
 .ai-messages {
   display: flex;
   flex-direction: column;
@@ -54,11 +30,6 @@
   padding: 14px;
 }
 
-/* ── .ai-msg ─────────────────────────────────────────── */
-/* Wrapper for a single message.  max-width:88% prevents
-   full-width bubbles which would feel like a wall of
-   text; the two align variants push user messages right
-   and assistant messages left.                          */
 .ai-msg {
   display: flex;
   flex-direction: column;
@@ -68,11 +39,6 @@
 .ai-msg--user      { align-self: flex-end;  align-items: flex-end;   }
 .ai-msg--assistant { align-self: flex-start; align-items: flex-start; }
 
-/* ── .ai-bubble ──────────────────────────────────────── */
-/* The visible speech bubble.  Serif font and generous
-   line-height make multi-line AI responses comfortable
-   to read.  The asymmetric border-radius (one corner
-   flattened) is the conventional chat-bubble visual.    */
 .ai-bubble {
   padding: 10px 13px;
   font-family: var(--font-serif);
@@ -81,14 +47,12 @@
   line-height: 1.68;
   border-radius: 12px;
 }
-/* User bubble — violet tint, right corner flattened */
 .ai-msg--user .ai-bubble {
   background: var(--accent-violet-bg2);
   border: 1px solid var(--accent-violet-border);
   color: var(--text-primary);
   border-bottom-right-radius: 3px;
 }
-/* Assistant bubble — elevated surface, left corner flattened */
 .ai-msg--assistant .ai-bubble {
   background: var(--bg-window-alt);
   border: 1px solid var(--divider);
@@ -96,14 +60,6 @@
   border-bottom-left-radius: 3px;
 }
 
-/* ═══════════════════════════════════════════════════════
-   SUGGESTION CHIPS
-═══════════════════════════════════════════════════════ */
-
-/* ── .ai-suggestions ─────────────────────────────────── */
-/* Wrapping row of .btn-outline--subtle chips that provide
-   one-tap prompts.  Sits between the message list and
-   the input footer.                                     */
 .ai-suggestions {
   display: flex;
   flex-wrap: wrap;
@@ -111,29 +67,15 @@
   padding: 0 14px 8px;
   flex-shrink: 0;
 }
-/* Smaller padding for suggestion chips vs standard .btn-outline */
 .ai-suggestions .btn-outline {
   padding: 5px 10px;
   font-size: 11px;
   border-radius: 20px;
 }
 
-/* ═══════════════════════════════════════════════════════
-   PROMPT INPUT FOOTER
-═══════════════════════════════════════════════════════ */
-
-/* ── .ai-footer ──────────────────────────────────────── */
-/* Overrides .panel-footer padding.  Contains a single
-   .field-row that holds the textarea and send button.   */
 .ai-footer { padding: 10px 12px; }
-
-/* The .field-row inside aligns items to flex-end so the
-   send button sits at the bottom of the textarea when
-   the textarea grows to multiple lines.                 */
 .ai-footer .field-row { align-items: flex-end; flex: 1; }
 
-/* Serif italic for the prompt input to visually
-   distinguish it from the UI chrome around it.         */
 .ai-footer .field-row__input {
   font-family: var(--font-serif);
   font-size: 13px;
@@ -146,4 +88,25 @@
 .ai-footer .field-row__input::placeholder {
   font-style: italic;
   color: var(--text-muted);
+}
+
+/* Expanded view */
+.app-root.is-expanded {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  box-sizing: border-box;
+}
+
+.app-root.is-expanded .panel {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
 }
