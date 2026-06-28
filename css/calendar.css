@@ -1,24 +1,9 @@
 /* ─────────────────────────────────────────────────────────
    calendar.css
    Layout and components unique to the Calendar window.
-   The window uses .panel for its top-level flex-column,
-   .panel-header for the month navigation bar, and
-   .panel-footer for the events list — all from
-   panel-utilities.css.  Only what is unique to the
-   calendar view lives here.
 ───────────────────────────────────────────────────────── */
-
-/* ── Initial window size ─────────────────────────────── */
 #win-calendar { width: 400px; height: 435px; }
 
-/* ═══════════════════════════════════════════════════════
-   CALENDAR HEADER
-═══════════════════════════════════════════════════════ */
-
-/* ── .cal-header ─────────────────────────────────────── */
-/* Overrides .panel-header padding for the calendar's
-   tighter nav-bar layout.  The two .icon-btn--lg arrows
-   and the centred month label are the only children.    */
 .cal-header {
   padding: 11px 14px;
   justify-content: space-between;
@@ -39,14 +24,6 @@
   margin-left: 5px;
 }
 
-/* ═══════════════════════════════════════════════════════
-   CALENDAR BODY — day grid
-═══════════════════════════════════════════════════════ */
-
-/* ── .cal-body ───────────────────────────────────────── */
-/* Fills the flex-grow space between the header and the
-   events footer.  Flex-column stacks the weekday-name
-   row above the day number grid.                        */
 .cal-body {
   flex: 1;
   display: flex;
@@ -56,9 +33,6 @@
   overflow: hidden;
 }
 
-/* ── .cal-weekdays ───────────────────────────────────── */
-/* Seven-column grid for the Su Mo Tu We Th Fr Sa labels.
-   Each cell uses .label-caps for its text.              */
 .cal-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -67,13 +41,8 @@
 .cal-weekday {
   text-align: center;
   padding: 4px 0;
-  /* text styling from .label-caps applied in HTML */
 }
 
-/* ── .cal-days ───────────────────────────────────────── */
-/* Seven-column grid for the actual day number cells.
-   align-content:start prevents the grid from stretching
-   rows when there are fewer than 6 weeks in a month.    */
 .cal-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -82,10 +51,6 @@
   align-content: start;
 }
 
-/* ── .cal-day ────────────────────────────────────────── */
-/* Individual day cell.  Flex-column centres the number
-   and optionally shows an event dot below it.
-   position:relative is reserved for future event stacks. */
 .cal-day {
   display: flex;
   flex-direction: column;
@@ -100,10 +65,6 @@
 .cal-day:hover { background: var(--bg-item-hover); }
 .cal-day.is-selected { background: var(--accent-violet-bg); }
 
-/* ── .cal-day__num ───────────────────────────────────── */
-/* The day number.  On .is-today a circular filled pill
-   replaces the bare text so today is immediately
-   identifiable at any font size.                        */
 .cal-day__num {
   font-family: var(--font-ui);
   font-size: 12px;
@@ -121,15 +82,11 @@
   color: #fff;
   font-weight: 700;
 }
-/* Days from adjacent months are visually suppressed */
 .cal-day.is-other-month .cal-day__num {
   color: var(--text-muted);
   opacity: 0.38;
 }
 
-/* ── .cal-day__dot ───────────────────────────────────── */
-/* Small indicator dot below the day number signalling
-   that at least one event exists on that date.          */
 .cal-day__dot {
   width: 4px;
   height: 4px;
@@ -138,14 +95,6 @@
   margin-top: 2px;
 }
 
-/* ═══════════════════════════════════════════════════════
-   EVENTS FOOTER
-═══════════════════════════════════════════════════════ */
-
-/* ── .cal-events ─────────────────────────────────────── */
-/* Extends .panel-footer with column direction so events
-   stack vertically.  align-items:stretch fills each
-   event row to the full width.                          */
 .cal-events {
   flex-direction: column;
   align-items: stretch;
@@ -153,19 +102,12 @@
   padding: 8px 14px 12px;
 }
 
-/* ── .cal-event ──────────────────────────────────────── */
-/* Extends .list-row with a left-colour-bar idiom.
-   The border-left colour is set inline in the HTML via
-   style="border-color: var(--accent-X)" so each event
-   can carry a different category colour.
-   border-radius on the right side only preserves the
-   "card with coloured left edge" visual metaphor.       */
 .cal-event {
   flex-direction: row;
   align-items: center;
   padding: 6px 8px;
   gap: 8px;
-  border-left: 3px solid;           /* colour set inline */
+  border-left: 3px solid;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   background: rgba(255,255,255,0.02);
 }
@@ -175,4 +117,24 @@
   color: var(--text-secondary);
   flex: 1;
 }
-/* .cal-event__time uses .label-micro from panel-utilities */
+
+/* Expanded view */
+.app-root.is-expanded {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  box-sizing: border-box;
+}
+
+.app-root.is-expanded .panel {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}

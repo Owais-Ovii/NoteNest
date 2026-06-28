@@ -1,28 +1,7 @@
 /* ─────────────────────────────────────────────────────────
    launcher.css
    The floating pill-shaped application launcher bar.
-   Self-contained component; nothing here is shared with
-   window chrome or application panels.
-
-   Class inventory
-   ───────────────
-   .launcher              Outermost wrapper — JS drags this element
-   .launcher__pill        Visible glassmorphic pill shell
-   .launcher__divider     Thin vertical rule separating button groups
-   .launcher__handle      Six-dot drag-grip zone on the left end
-   .launcher__handle-dots Dot grid rendered inside the handle
-   .launch-btn            Single application icon button
-   .launch-btn__icon      Rounded square housing the Remix Icon
-   .launch-btn__label     Micro caption below the icon
-   .launch-btn__dot       Active-state indicator dot below button
-   .launch-btn__tooltip   CSS-only tooltip shown on hover
 ───────────────────────────────────────────────────────── */
-
-/* ── .launcher ───────────────────────────────────────── */
-/* position:fixed keeps it above all windows regardless of
-   window z-index values.  Starts centred at the bottom;
-   JS moves it on drag and calls snapToEdge() on release
-   so it never gets lost off-screen.                      */
 .launcher {
   position: fixed;
   bottom: 28px;
@@ -31,11 +10,6 @@
   z-index: 9999;
 }
 
-/* ── .launcher__pill ─────────────────────────────────── */
-/* The visible container.  backdrop-filter produces the
-   frosted-glass depth effect.  The ::before shimmer line
-   on the top rim mimics a light source above the pill,
-   reinforcing the floating appearance.                   */
 .launcher__pill {
   position: relative;
   display: flex;
@@ -65,10 +39,6 @@
   pointer-events: none;
 }
 
-/* ── .launcher__divider ──────────────────────────────── */
-/* 1px vertical rule that separates the handle group,
-   the main app buttons, and the utility buttons into
-   visually distinct clusters.                           */
 .launcher__divider {
   width: 1px;
   height: 28px;
@@ -77,10 +47,6 @@
   margin: 0 4px;
 }
 
-/* ── .launcher__handle ───────────────────────────────── */
-/* Drag-grip zone.  Low opacity at rest so it does not
-   compete with the app icons; brightens on hover to
-   signal draggability to the user.                      */
 .launcher__handle {
   display: flex;
   align-items: center;
@@ -95,10 +61,6 @@
 .launcher__handle:hover  { opacity: 0.70; }
 .launcher__handle:active { cursor: grabbing; opacity: 0.90; }
 
-/* ── .launcher__handle-dots ──────────────────────────── */
-/* 2×3 dot grid rendered as a CSS grid of tiny circles.
-   Visually communicates "draggable grip" without needing
-   any icon or text.                                     */
 .launcher__handle-dots {
   display: grid;
   grid-template-columns: repeat(2, 4px);
@@ -112,11 +74,6 @@
   background: var(--text-secondary);
 }
 
-/* ── .launch-btn ─────────────────────────────────────── */
-/* Individual application button.  position:relative
-   anchors the tooltip and active dot.  The spring
-   transition on transform creates the iOS-Dock-style
-   bounce when the user hovers over a button.            */
 .launch-btn {
   position: relative;
   display: flex;
@@ -135,13 +92,6 @@
 .launch-btn:hover     { transform: translateY(-5px) scale(1.12); }
 .launch-btn.is-active { transform: translateY(-3px); }
 
-/* ── .launch-btn__icon ───────────────────────────────── */
-/* Rounded square that houses the Remix Icon character.
-   Uses a subtle glass-like background at rest.  Active
-   state (window is open) applies a violet tint; this
-   is set here as the default active colour but can be
-   overridden per-button in the HTML with a style attr
-   if a different accent is preferred per app.           */
 .launch-btn__icon {
   width: 34px;
   height: 34px;
@@ -166,10 +116,6 @@
   color: var(--accent-violet);
 }
 
-/* ── .launch-btn__label ──────────────────────────────── */
-/* Micro caption below the icon.  Transitions through
-   three states: muted at rest → secondary on hover →
-   accent-violet when active.                           */
 .launch-btn__label {
   font-size: 9px;
   font-weight: 700;
@@ -182,10 +128,6 @@
 .launch-btn:hover .launch-btn__label     { color: var(--text-secondary); }
 .launch-btn.is-active .launch-btn__label { color: var(--accent-violet);  }
 
-/* ── .launch-btn__dot ────────────────────────────────── */
-/* Small indicator dot positioned below the button,
-   visible only when the corresponding window is open.
-   Communicates open/closed state at a glance.          */
 .launch-btn__dot {
   position: absolute;
   bottom: -1px;
@@ -200,10 +142,6 @@
 }
 .launch-btn.is-active .launch-btn__dot { opacity: 1; }
 
-/* ── .launch-btn__tooltip ────────────────────────────── */
-/* CSS-only tooltip that appears above the button on
-   hover.  No JS required — pointer-events:none ensures
-   it does not interfere with the button's own hover.   */
 .launch-btn__tooltip {
   position: absolute;
   bottom: calc(100% + 10px);

@@ -1,42 +1,20 @@
 /* ─────────────────────────────────────────────────────────
    notes.css
-   Layout and components that are unique to the Notes
-   window.  Every shared structural pattern (panel headers,
-   scrollable regions, icon buttons, badges, list rows,
-   field rows) is already defined in panel-utilities.css
-   and is simply applied via class composition in the HTML.
-   This file only describes what is genuinely distinct
-   about the Notes application.
+   Layout and components unique to the Notes window.
 ───────────────────────────────────────────────────────── */
 
-/* ── Initial window size ─────────────────────────────── */
 #win-notes { width: 810px; height: 570px; }
 
-/* ── .notes-grid ─────────────────────────────────────── */
-/* The Notes window needs a two-dimensional layout that
-   the flex-column .panel pattern cannot express:
-     Row 1 (44px):  subject tab bar spanning full width
-     Row 2 (1fr):   sidebar (190px) | content (1fr)
-   CSS Grid handles this cleanly; the child elements are
-   placed explicitly with grid-column / grid-row.         */
 .notes-grid {
   display: grid;
-  grid-template-columns: 190px 1fr;
+  grid-template-columns: auto 1fr;
   grid-template-rows: 44px 1fr;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-/* ═══════════════════════════════════════════════════════
-   SUBJECT TAB BAR
-═══════════════════════════════════════════════════════ */
-
-/* ── .notes-tabs ─────────────────────────────────────── */
-/* Full-width horizontal tab strip spanning both grid
-   columns in row 1.  Individual tabs are placed inside.
-   Horizontal overflow is hidden via scrollbar:none so the
-   bar stays clean even with many subjects.               */
+/* ── Subject Tab Bar ────────────────────────────────── */
 .notes-tabs {
   grid-column: 1 / -1;
   grid-row: 1;
@@ -51,11 +29,6 @@
 }
 .notes-tabs::-webkit-scrollbar { display: none; }
 
-/* ── .subject-tab ────────────────────────────────────── */
-/* Individual subject tab.  The bottom-edge trick —
-   border-bottom-color matching the window body background
-   when active — makes the active tab appear "open" and
-   visually connected to the content below.               */
 .subject-tab {
   display: flex;
   align-items: center;
@@ -86,7 +59,6 @@
   border-bottom-color: var(--bg-window);
 }
 
-/* Coloured identity dot inside each tab */
 .subject-tab__dot {
   display: inline-block;
   width: 6px;
@@ -95,10 +67,6 @@
   flex-shrink: 0;
 }
 
-/* ── .notes-tabs__add ────────────────────────────────── */
-/* The "＋" button appended after all subject tabs.
-   Uses .icon-btn sizing but sits in the tab-bar context,
-   so it is styled separately to match the bar height.   */
 .notes-tabs__add {
   display: flex;
   align-items: center;
@@ -114,14 +82,7 @@
 }
 .notes-tabs__add:hover { color: var(--accent-gold); }
 
-/* ═══════════════════════════════════════════════════════
-   SECTIONS SIDEBAR
-═══════════════════════════════════════════════════════ */
-
-/* ── .notes-sidebar ──────────────────────────────────── */
-/* Left column in row 2.  Flex-column so that the
-   .panel-header sits at the top and .panel-scroll fills
-   the remainder.                                        */
+/* ── Sections Sidebar ───────────────────────────────── */
 .notes-sidebar {
   grid-column: 1;
   grid-row: 2;
@@ -130,20 +91,16 @@
   background: var(--bg-sidebar);
   border-right: 1px solid var(--divider);
   overflow: hidden;
+  max-width: 190px;
+  width: 190px;
+  transition: width var(--t-base), max-width var(--t-base);
 }
 
-/* Override .panel-header padding for the tighter sidebar */
 .notes-sidebar .panel-header {
   padding: 11px 14px 10px;
   justify-content: space-between;
 }
 
-/* ── .section-row ────────────────────────────────────── */
-/* Extends .list-row with sidebar-specific padding and a
-   left-border accent that reveals on the active state.
-   The left border replaces the standard .list-row
-   border-color change because it reads better in a
-   narrow sidebar context.                               */
 .section-row {
   gap: 8px;
   padding: 8px 14px;
@@ -155,7 +112,7 @@
 .section-row.is-active {
   background: var(--accent-violet-bg);
   border-left-color: var(--accent-violet);
-  border-color: transparent;        /* suppress .list-row.is-active border */
+  border-color: transparent;
   border-left-color: var(--accent-violet);
 }
 
@@ -164,14 +121,35 @@
 .section-row:hover .section-row__name  { color: var(--text-primary); }
 .section-row.is-active .section-row__name { color: var(--text-primary); }
 
-/* ═══════════════════════════════════════════════════════
-   NOTE LIST + EDITOR SPLIT
-═══════════════════════════════════════════════════════ */
+/* Collapsible sidebar states */
+.notes-sidebar.is-collapsed {
+  width: 44px;
+  max-width: 44px;
+}
+.notes-sidebar.is-collapsed .section-row__name,
+.notes-sidebar.is-collapsed .badge,
+.notes-sidebar.is-collapsed .panel-header .label-caps,
+.notes-sidebar.is-collapsed .sidebar-hide,
+.notes-sidebar.is-collapsed .icon-btn[aria-label="Add section"] {
+  display: none;
+}
+.notes-sidebar.is-collapsed .panel-header {
+  padding: 11px 8px;
+  justify-content: center;
+}
+.notes-sidebar.is-collapsed .section-row {
+  justify-content: center;
+  padding: 8px 0;
+}
 
-/* ── .notes-content ──────────────────────────────────── */
-/* Right column in row 2.  An inner two-column grid splits
-   this space into the note-card list (215px) and the
-   full-width editor (1fr).                              */
+.notes-sidebar.is-hidden {
+  width: 0;
+  max-width: 0;
+  overflow: hidden;
+  border-right: none;
+}
+
+/* ── Note List + Editor Split ───────────────────────── */
 .notes-content {
   grid-column: 2;
   grid-row: 2;
@@ -181,10 +159,11 @@
   height: 100%;
 }
 
-/* ── .note-list ──────────────────────────────────────── */
-/* Left column of .notes-content.  Flex-column so the
-   .panel-header (search bar), .panel-scroll (cards),
-   and the new-note button stack correctly.              */
+/* When sidebar is hidden, content stretches full width */
+.notes-sidebar.is-hidden + .notes-content {
+  grid-column: 1 / -1;
+}
+
 .note-list {
   display: flex;
   flex-direction: column;
@@ -194,10 +173,6 @@
 }
 .note-list .panel-header { padding: 10px 10px; }
 
-/* ── .note-card ──────────────────────────────────────── */
-/* Extends .list-row with a column-direction flex layout
-   for the multi-line card content.  Gap is zero because
-   internal spacing is handled by margin on child elements.*/
 .note-card {
   flex-direction: column;
   gap: 0;
@@ -237,10 +212,6 @@
   flex-wrap: wrap;
 }
 
-/* ── .note-list__new ─────────────────────────────────── */
-/* Dashed "New Note" button pinned below the card list.
-   Uses dashed border and accent colour to signal it is
-   an action, not a content item.                        */
 .note-list__new {
   flex-shrink: 0;
   margin: 6px;
@@ -266,38 +237,23 @@
   border-color: rgba(124,106,245,0.42);
 }
 
-/* ═══════════════════════════════════════════════════════
-   NOTE EDITOR
-═══════════════════════════════════════════════════════ */
-
-/* ── .note-editor ────────────────────────────────────── */
-/* Right column of .notes-content.  Flex-column stacks
-   the toolbar bar, title/meta row, body textarea,
-   and autosave strip.                                   */
+/* ── Note Editor ────────────────────────────────────── */
 .note-editor {
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: var(--bg-window);
 }
-/* Override .panel-header for the denser toolbar bar */
 .note-editor .panel-header { padding: 7px 12px; }
 
-/* ── .editor-toolbar ─────────────────────────────────── */
-/* Horizontal group of .icon-btn elements.  flex:1 lets
-   the toolbar fill available space while .editor-actions
-   stays flush right.                                    */
 .editor-toolbar {
   display: flex;
   align-items: center;
   gap: 1px;
   flex: 1;
 }
-/* Serif font override for B / I / U glyph buttons */
 .editor-toolbar .icon-btn { font-family: var(--font-serif); font-size: 13px; }
 
-/* ── .editor-actions ─────────────────────────────────── */
-/* Right-aligned group holding Ask AI and Save buttons.  */
 .editor-actions {
   display: flex;
   align-items: center;
@@ -305,8 +261,6 @@
   flex-shrink: 0;
 }
 
-/* ── .note-editor__head ──────────────────────────────── */
-/* Title input + metadata row directly below the toolbar. */
 .note-editor__head {
   padding: 15px 20px 10px;
   border-bottom: 1px solid var(--divider);
@@ -332,7 +286,6 @@
   margin-top: 7px;
   flex-wrap: wrap;
 }
-/* Inline tag input — styled as a .badge visually */
 .note-editor__tag {
   font-family: var(--font-ui);
   font-size: 10px;
@@ -347,32 +300,206 @@
   letter-spacing: 0.04em;
 }
 
-/* ── .note-editor__body ──────────────────────────────── */
-/* Scrollable textarea region that fills remaining height. */
+/* The body now contains an iframe, no padding */
 .note-editor__body {
   flex: 1;
-  padding: 16px 20px;
-  overflow-y: auto;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
 }
-.note-editor__content {
-  font-family: var(--font-serif);
-  font-size: 14.5px;
-  font-weight: 300;
-  line-height: 1.92;
-  color: var(--text-primary);
-  background: none;
-  border: none;
-  outline: none;
-  width: 100%;
-  min-height: 200px;
-  resize: none;
-}
-.note-editor__content::placeholder { color: var(--text-muted); font-style: italic; }
 
-/* ── Note editor status bar (uses .panel-footer) ─────── */
+/* Iframe for note content */
+.note-editor__content {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-window);
+  display: block;
+}
+
 .note-editor__status {
   font-family: var(--font-ui);
   font-size: 10px;
   color: var(--text-muted);
   letter-spacing: 0.06em;
+}
+
+/* Active state for the Edit Markup button */
+#edit-markup-btn.is-active {
+  color: var(--accent-violet);
+  border-color: var(--accent-violet-border);
+  background: var(--accent-violet-bg);
+}
+
+/* ── Expanded view (standalone) ──────────────────────── */
+.app-root.is-expanded {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;            /* no extra gap */
+  box-sizing: border-box;
+}
+
+.app-root.is-expanded .notes-grid {
+  border-radius: 0;      /* remove window rounding */
+  box-shadow: none;      /* remove window shadow */
+  border: none;
+  grid-template-rows: 52px 1fr;   /* slightly taller tabs */
+}
+
+.app-root.is-expanded .notes-content {
+  grid-template-columns: 280px 1fr;
+}
+
+.app-root.is-expanded .note-editor__title {
+  font-size: 30px;
+}
+
+.app-root.is-expanded .note-editor__content {
+  /* No extra styles needed; iframe fills */
+}
+
+/* ── Markup Editor (DOM-based, no iframe nesting) ─────── */
+.markup-editor {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-window);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.markup-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 16px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  border: none;
+  outline: none;
+  resize: none;
+}
+
+.markup-actions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg-titlebar);
+  border-top: 1px solid var(--divider);
+}
+/* ── Toolbar active state ──────────────────────────── */
+.editor-toolbar .icon-btn.is-active {
+  background: var(--accent-violet-bg);
+  color: var(--accent-violet);
+}
+
+/* ── Heading dropdown ──────────────────────────────── */
+.heading-dropdown {
+  position: relative;
+  display: flex;
+}
+
+.heading-btn {
+  /* same as icon-btn, but we need the relative parent */
+}
+
+.heading-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--bg-window-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  z-index: 20;
+  min-width: 140px;
+  padding: 4px;
+  flex-direction: column;
+}
+
+.heading-dropdown:hover .heading-options {
+  display: flex;
+}
+
+.heading-options button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.heading-options button:hover {
+  background: var(--bg-item-hover);
+  color: var(--text-primary);
+}
+/* ── Subtle iframe border ──────────────────────────── */
+.note-editor__content {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+/* ── Summary Modal (overlay + centered box) ────────── */
+.summary-modal {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.summary-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.summary-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  background: var(--bg-window);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.summary-textarea {
+  flex: 1;
+  min-height: 150px;
+  padding: 14px;
+  background: var(--bg-input);
+  border: none;
+  border-top: 1px solid var(--divider);
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+}
+
+/* ── Summary Container (inside the note iframe) ───── */
+/* These will be injected into the iframe's document, so they must be added to iframe head styles */
+
+/* We'll add them via JavaScript in enableIframeEditing(), but here we define them for reference.
+   The actual styles will be appended to the iframe's <head> as a <style> element. */
+   .app-root {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
