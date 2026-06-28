@@ -1,0 +1,87 @@
+/* ─────────────────────────────────────────────────────────
+   page-style.css
+   Everything that belongs to the outermost shell of the
+   application — the browser reset, the body, the full-
+   viewport desktop canvas, global scrollbar overrides,
+   and the shared @keyframes referenced by multiple
+   components.  Nothing component-specific lives here.
+───────────────────────────────────────────────────────── */
+
+/* ── Reset ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  font-family: var(--font-ui);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent text selection while dragging windows */
+  user-select: none;
+  cursor: default;
+}
+
+/* ── Desktop canvas ──────────────────────────────────── */
+/* The full-viewport surface on which all floating windows
+   are absolutely positioned.  Two radial gradients create
+   a subtle directional glow — one cool-violet in the top-
+   left, one warm-gold in the bottom-right — giving depth
+   without competing with window content.                  */
+#desktop {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 18% 8%,
+      rgba(124,106,245,0.045) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 82% 88%,
+      rgba(201,168,76,0.032) 0%, transparent 55%),
+    var(--bg-canvas);
+}
+
+/* Film-grain noise overlay — adds texture at very low
+   opacity so the canvas does not look flat.             */
+#desktop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* ── Global scrollbars ───────────────────────────────── */
+/* Applied globally so every scroll region in every window
+   inherits a consistent minimal scrollbar style.         */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--divider); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border); }
+*  { scrollbar-width: thin; scrollbar-color: var(--divider) transparent; }
+
+/* ── Shared keyframes ────────────────────────────────── */
+
+/* Window open: spring scale from slightly below.
+   Used by .win in floating-window.css.                  */
+@keyframes win-open {
+  from { opacity: 0; transform: scale(0.91) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+/* Pulsing dot for live status indicators.
+   Used by .pulse-dot in panel-utilities.css.            */
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 1;    }
+}
+
+/* ── Utility: visually hidden ────────────────────────── */
+.u-hidden { display: none !important; }
